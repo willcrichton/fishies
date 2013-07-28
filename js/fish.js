@@ -30,17 +30,16 @@ define(function(require) {
     }
 
     function Fish(position) {
-        _.extend(this, fish.place(position));
-        this.orientation = C.LEFT;
-        this.velocity = [0, 0];
+        var self = fish.place(position);
+        self.orientation = C.LEFT;
+        self.velocity = [0, 0];
+        
+        self.addVelocity = function(vector) {
+            this.velocity = [addVel(this.velocity[0], vector[0]),
+                             addVel(this.velocity[1], vector[1])];
+        }
+
+        return self;
     }
-
-    Fish.prototype = Object.create(PlacedSymbol.prototype);
-
-    Fish.prototype.addVelocity = function(vector) {
-        this.velocity = [addVel(this.velocity[0], vector[0]),
-                         addVel(this.velocity[1], vector[1])];
-    }
-
     return Fish;
 });
