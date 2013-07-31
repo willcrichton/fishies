@@ -7,6 +7,9 @@ define(function(require) {
         ACCELERATION: 0.2,
         DECELERATION: 0.07,
         LEFT: 1,
-        RIGHT: 0
+        RIGHT: 0,
+        MAX_ENEMY_VARIANCE: 1.8,
+        MIN_ENEMY_VARIANCE: 0.4,
+        FISH_SPAWN_TIME: 0.7
     }
-});
+}); 

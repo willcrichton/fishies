@@ -2,16 +2,17 @@
 <html>
   <head>
     <title>Fishies</title>
-    <style>
-      * { margin: 0; padding: 0; }
-      body { overflow: hidden; }
-      img { display: none; }
-    </style>
+    <link href="style.css" rel="stylesheet">
   </head>
   <body>
+    <div id="dialogue">
+      <h1>fishies</h1>
+      <button id="play">Play</button>
+      <div id="score"></div>
+    </div>
     <canvas id="fishies" resize></canvas>
     <script src="js/vendor/underscore-min.js"></script>
     <script src="js/vendor/paper.js"></script>
-    <script src="js/vendor/require.js" data-main="js/game"></script>
+    <script src="js/vendor/require.js" data-main="js/main"></script>
   </body>
 </html>

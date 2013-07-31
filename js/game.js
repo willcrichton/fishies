@@ -7,13 +7,48 @@ paper.setup('fishies');
 define(function(require) {
     'use strict';
 
-    // prevent JS files from getting cached (for development)
-    requirejs.config({urlArgs: 'bust=' + (new Date()).getTime()});
-    
     var Fish = require('fish');
     var C    = require('constants');
 
-    var player = Fish([100, 100]);
+    var Game = {
+        start: function() {
+            this.player = Fish(view.bounds.center);
+            this.lastFish = 0;
+            this.score = 0;
+            this.started = true;
+
+            for (var i = 0; i < 10; i++) {
+                this.newEnemy();
+            }
+        },
+
+        end: function() {
+            document.getElementById('dialogue').style.display = 'block';
+            document.getElementById('score').innerHTML = 'Your score was ' + this.score;
+            project.activeLayer.removeChildren();
+            this.started = false;
+        },
+
+        newEnemy: function() {
+            var pos = Math.random() * view.bounds.height;
+            var side = Math.random() > 0.5;
+            var enemy = Fish([side ? view.bounds.width : 0, pos]);
+            
+            var cur_scale = this.player.strokeBounds.width / enemy.strokeBounds.width;
+            var rand = (Math.random() * 2 - 1) * (C.MAX_ENEMY_VARIANCE - C.MIN_ENEMY_VARIANCE);
+            rand += sign(rand) * C.MIN_ENEMY_VARIANCE;
+
+            var scale = cur_scale + rand;
+            enemy.scale(scale);
+
+            enemy.position.x += (side ? 1 : -1) * enemy.strokeBounds.width / 2;
+            
+            enemy.addVelocity([(side ? -1 : 1) * 3 * (cur_scale / scale), 0]);
+            enemy.children[0].fillColor = '#' + (Math.round(0xffffff * Math.random())).toString(16);
+            enemy.rotate(side ? 0 : 180);
+        }
+    }
+
 
     function sign(n) { return n > 0 ? 1 : -1; }
 
@@ -25,11 +60,13 @@ define(function(require) {
         velocity[1] = velocity[1] > 0 ? Math.max(decel1, 0) : Math.min(decel1, 0);
     }
 
-    var last_fish = 0;
-
-    window.player = player;
-
     view.onFrame = function(e) {
+
+        if (!Game.started) {
+            return;
+        }
+
+        var player = Game.player;
 
         // handle keyboard events for moving fish
         if (Key.isDown('w') || Key.isDown('up')) { 
@@ -64,15 +101,15 @@ define(function(require) {
 
         // move the fish by the given velocity
         player.position = player.position.add(player.velocity);
-            
-            // change the fish's orientation accordingly
+        
+        // change the fish's orientation accordingly
         if ((player.velocity[0] > 0 && player.orientation == C.LEFT) ||
             (player.velocity[0] < 0 && player.orientation == C.RIGHT)) {
             player.rotate(180);
             player.orientation = !player.orientation;
         }
         
-        // detect collisions with other fishes and move them
+        // handle enemy fish logic and collisions
         _.forEach(project.activeLayer.children, function(other_fish) {
             if (player.id === other_fish.id) {
                 return;
@@ -85,32 +122,29 @@ define(function(require) {
                 if (player_bounds.width > other_bounds.width) {
                     player.scale((player_bounds.width + C.SIZE_GAIN) / player_bounds.width);
                     other_fish.remove();
+                    Game.score++;
                 } else {
-                    console.log('YOU LOSE');
+                    Game.end();
                 }
             }
-
+            
             other_fish.position = other_fish.position.add(other_fish.velocity);
+
+            // todo: add GC
+            /*if (!other_bounds.intersects(view.bounds) && !view.bounds.contains(other_bounds)) {
+              other_fish.remove();
+              }*/
         });
         
         decelerate(player.velocity);
 
         // generate fishes every second
-        if (e.time - last_fish >= 1) {
-            var pos = Math.random() * view.bounds.height;
-            var side = Math.random() > 0.5;
-            var enemy = Fish([side ? view.bounds.width + 100 : -100, pos]);
-
-            var cur_scale = player_bounds.width / enemy.strokeBounds.width;
-            var scale = cur_scale + (Math.random() * 1.8 - 0.9)
-            enemy.scale(scale);
-            enemy.addVelocity([(side ? -1 : 1) * 3 * (cur_scale / scale), 0]);
-            enemy.fill = 'rgb(' + Math.random() * 255 + ', ' + Math.random() * 255 + ', ' + Math.random() * 255 +')';
-            enemy.rotate(side ? 0 : 180);
-
-            last_fish = e.time;
+        if (e.time - Game.lastFish >= C.FISH_SPAWN_TIME) {
+            Game.newEnemy();
+            Game.lastFish = e.time;
         }
     }
 
-    view.draw();
+    return Game;
+
 });
