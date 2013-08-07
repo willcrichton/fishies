@@ -19,7 +19,7 @@ define(function(require) {
 
     Util.addVelocity = function(curVel, inc) {
         var newVel = curVel + inc;
-        return Util.sign(curVel) * Math.min(Math.abs(newVel), C.MAX_VELOCITY);
+        return Util.sign(newVel) * Math.min(Math.abs(newVel), C.MAX_VELOCITY);
     };
 
     return Util;
