@@ -1,16 +1,12 @@
 define(function(require) {
     'use strict';
 
-    var C = require('constants');
-
-    function addVel(cur, inc) {
-        var newVel = cur + inc;
-        var sign = newVel > 0 ? 1 : -1;
-        return sign * Math.min(Math.abs(newVel), C.MAX_VELOCITY);
-    }
+    var 
+    C    = require('constants'),
+    Util = require('util');
 
     function Fish(position) {
-        var self = new Group();
+        Group.call(this);
 
         var start = new Point(0, 0);
         var segments = [start, 
@@ -27,18 +23,18 @@ define(function(require) {
         outline.closed = true;
         outline.smooth();
 
-        self.addChild(outline);
-        self.position = position;
-        self.orientation = C.LEFT;
-        self.velocity = [0, 0];
+        this.addChild(outline);
+        this.position = position;
+        this.orientation = C.LEFT;
+        this.velocity = [0, 0];
 
-        self.addVelocity = function(vector) {
-            this.velocity = [addVel(this.velocity[0], vector[0]),
-                             addVel(this.velocity[1], vector[1])];
+        this.addVelocity = function(vector) {
+            this.velocity = [Util.addVelocity(this.velocity[0], vector[0]),
+                             Util.addVelocity(this.velocity[1], vector[1])];
         }
-
-        return self;
     }
+
+    Fish.prototype = Object.create(Group.prototype);
 
     return Fish;
 });
