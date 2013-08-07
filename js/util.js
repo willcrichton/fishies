@@ -1,3 +1,7 @@
+/*
+ * util.js: various utility functions for the game
+ */
+
 define(function(require) {
     'use strict';
 

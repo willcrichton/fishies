@@ -1,3 +1,7 @@
+/*
+ * fish.js: defines the Fish class, the main entity in the game
+ */
+
 define(function(require) {
     'use strict';
 

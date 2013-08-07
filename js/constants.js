@@ -1,3 +1,7 @@
+/*
+ * constants.js: contains various numeric constants for tuning the game
+ */
+
 define(function(require) {
     'use strict';
 

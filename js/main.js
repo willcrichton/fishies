@@ -1,3 +1,7 @@
+/*
+ * main.js: set up the game and splash screen
+ */
+
 define(function(require) {
     'use strict';
 

@@ -1,3 +1,7 @@
+/*
+ * game.js: handles most game logic
+ */
+
 // paperjs has to have this run before
 // any modules can reference paper variables
 // todo--better, more modular way to do this?
