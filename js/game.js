@@ -14,7 +14,8 @@ define(function(require) {
     var
     Fish = require('fish'),
     C    = require('constants'),
-    Util = require('util');
+    Util = require('util'),
+    Achievements = require('achievements');
 
     var Game = {
         start: function() {
@@ -101,6 +102,9 @@ define(function(require) {
                         player.scale((playerBounds.width + C.SIZE_GAIN * (otherBounds.width / playerBounds.width + 0.3)) / playerBounds.width);
                         otherFish.remove();
                         this.score++;
+                        Achievements.check(this.score);
+
+                        player.setColor(otherFish.getColor());
                     } else {
                         this.end();
                     }
@@ -114,7 +118,7 @@ define(function(require) {
                   }*/
             }, this);
 
-            Util.decelerate(player.velocity);
+           Util.decelerate(player.velocity);
 
             // generate fishes every second
             if (e.time - this.lastFish >= C.FISH_SPAWN_TIME) {

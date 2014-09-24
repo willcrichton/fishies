@@ -15,6 +15,11 @@ define(function() {
         MAX_ENEMY_VARIANCE: 1.8,    // enemies are up to 1 + X (or minus) times player size
         MIN_ENEMY_VARIANCE: 0.4,    // enemies are at least 1 + X (or minus) times player size
         FISH_SPAWN_TIME: 0.7,       // how frequently (in seconds) fish spawn
-        MIN_EAT_OVERLAP: 0.05       // minimum area needed for small fish to eat or be eaten (ratio)
+        MIN_EAT_OVERLAP: 0.05,       // minimum area needed for small fish to eat or be eaten (ratio)
+
+        MESSAGES: [
+            [1, 'Good luck'],
+            [3, 'Congrats!']
+        ]
     };
 });

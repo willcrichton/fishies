@@ -32,6 +32,7 @@ define(function(require) {
         outline.smooth();
 
         this.addChild(outline);
+        this.outline = outline;
         this.position = position;
         this.orientation = C.LEFT;
         this.velocity = [0, 0];
@@ -43,6 +44,14 @@ define(function(require) {
         this.velocity = [Util.addVelocity(this.velocity[0], vector[0]),
                          Util.addVelocity(this.velocity[1], vector[1])];
     };
+
+    Fish.prototype.setColor = function(color) {
+        this.outline.fillColor = color;
+    };
+
+    Fish.prototype.getColor = function() {
+        return this.outline.fillColor;
+    }
 
     return Fish;
 });
