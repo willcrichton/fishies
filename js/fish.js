@@ -5,7 +5,7 @@
 define(function(require) {
     'use strict';
 
-    var 
+    var
     C    = require('constants'),
     Util = require('util');
 
@@ -17,12 +17,12 @@ define(function(require) {
         var start = new Point(0, 0);
 
         // points of fish outline
-        var segments = [start, 
-                        start.add([20, 10]), 
-                        start.add([40, 3]), 
-                        start.add([50, 10]), 
-                        start.add([50, -10]), 
-                        start.add([40, -3]), 
+        var segments = [start,
+                        start.add([20, 10]),
+                        start.add([40, 3]),
+                        start.add([50, 10]),
+                        start.add([50, -10]),
+                        start.add([40, -3]),
                         start.add([20, -10])];
 
         var outline = new Path(segments);
@@ -30,7 +30,7 @@ define(function(require) {
         outline.fillColor = '#a00';
         outline.closed = true;
         outline.smooth();
-        
+
         this.addChild(outline);
         this.position = position;
         this.orientation = C.LEFT;
@@ -40,9 +40,9 @@ define(function(require) {
     Fish.prototype = Object.create(Group.prototype);
 
     Fish.prototype.addVelocity = function(vector) {
-       this.velocity = [Util.addVelocity(this.velocity[0], vector[0]),
-                        Util.addVelocity(this.velocity[1], vector[1])];
-    }
+        this.velocity = [Util.addVelocity(this.velocity[0], vector[0]),
+                         Util.addVelocity(this.velocity[1], vector[1])];
+    };
 
     return Fish;
 });

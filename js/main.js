@@ -7,7 +7,7 @@ define(function(require) {
 
     // prevent JS files from getting cached (for development)
     requirejs.config({urlArgs: 'bust=' + (new Date()).getTime()});
-    
+
     var game = require('game');
     document.getElementById('play').addEventListener('click', function() {
         document.getElementById('dialogue').style.display = 'none';
